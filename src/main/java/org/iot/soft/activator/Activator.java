@@ -1,17 +1,15 @@
 package org.iot.soft.activator;
 
+
 public class Activator implements IActivator {
 
-  
     @Override
     public void start() {
-        System.out.println("Bundle iniciado.");
+        System.out.println("The Bundle is Running!");
     }
-
 
     @Override
     public void stop() {
-        System.out.println("Bundle finalizado.");
+        System.out.println("The Bundle has been Finalized!");
     }
-
 }

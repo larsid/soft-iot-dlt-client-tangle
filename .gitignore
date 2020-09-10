@@ -1,3 +1,4 @@
 old bundles/
 target/
-src/main/java/org/iot/soft/services/
+src/main/java/org/iot/soft/model/IotaClient.java
+
