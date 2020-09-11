@@ -32,7 +32,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>4.2.1</version>
+                <version>5.1.1</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -42,7 +42,7 @@
                         <Embed-StripGroup>true</Embed-StripGroup>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Export-Package>
-                            org.iot.soft.*
+                            dlt.client.tangle.*
                         </Export-Package>
                         <Import-Package>
                             org.iota.jota.*;

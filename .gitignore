@@ -1,4 +1,4 @@
 old bundles/
 target/
-src/main/java/org/iot/soft/model/IotaClient.java
+src/main/java/dlt/client/tangle/model/IotaClient.java
 

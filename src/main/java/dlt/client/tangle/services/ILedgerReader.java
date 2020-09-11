@@ -1,5 +1,5 @@
 
-package org.iot.soft.services;
+package dlt.client.tangle.services;
 
 /**
  *

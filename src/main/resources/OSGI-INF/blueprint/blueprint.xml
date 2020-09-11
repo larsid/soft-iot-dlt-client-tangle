@@ -5,32 +5,32 @@
     <service
         id="ILedgerWriterService"
         ref="ledgerWriter"
-        interface="org.iot.soft.services.ILedgerWriter"
+        interface="dlt.client.tangle.services.ILedgerWriter"
     />
     
     <service
         id="ILedgerReaderService"
         ref="ledgerReader"
-        interface="org.iot.soft.services.ILedgerReader"
+        interface="dlt.client.tangle.services.ILedgerReader"
     />
     
     <bean 
-        id="LedgerService"
-        class="org.iot.soft.activator.Activator"
+        id="ledgerService"
+        class="dlt.client.tangle.activator.Activator"
         init-method="start"
         destroy-method="stop"
     />
 
     <bean
         id="ledgerReader"
-        class="org.iot.soft.model.LedgerReader"
+        class="dlt.client.tangle.model.LedgerReader"
         init-method="start"
         destroy-method="stop"
     />
     
     <bean
         id="ledgerWriter"
-        class="org.iot.soft.model.LedgerWriter"
+        class="dlt.client.tangle.model.LedgerWriter"
         init-method="start"
         destroy-method="stop"
     />

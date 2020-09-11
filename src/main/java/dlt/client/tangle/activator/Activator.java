@@ -1,8 +1,9 @@
-package org.iot.soft.activator;
+package dlt.client.tangle.activator;
 
 /**
  * 
  * @author Uellington Damasceno
+ * @version 0.0.1
  */
 public class Activator implements IActivator {
 

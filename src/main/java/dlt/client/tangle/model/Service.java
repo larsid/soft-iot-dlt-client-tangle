@@ -1,4 +1,4 @@
-package org.iot.soft.model;
+package dlt.client.tangle.model;
 
 /**
  *

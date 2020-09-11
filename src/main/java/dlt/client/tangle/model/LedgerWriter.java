@@ -1,6 +1,6 @@
-package org.iot.soft.model;
+package dlt.client.tangle.model;
 
-import org.iot.soft.services.ILedgerWriter;
+import dlt.client.tangle.services.ILedgerWriter;
 
 /**
  *
