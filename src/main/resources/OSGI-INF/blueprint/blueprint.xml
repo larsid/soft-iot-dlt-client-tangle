@@ -3,15 +3,15 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="eager">
     
     <service
-        id="IBCWriterService"
-        ref="BCWriter"
-        interface="org.iot.soft.services.IBCWriter"
+        id="ILedgerWriterService"
+        ref="ledgerWriter"
+        interface="org.iot.soft.services.ILedgerWriter"
     />
     
     <service
         id="ILedgerReaderService"
-        ref="BCReader"
-        interface="org.iot.soft.services.IBCReader"
+        ref="ledgerReader"
+        interface="org.iot.soft.services.ILedgerReader"
     />
     
     <bean 
@@ -23,14 +23,14 @@
 
     <bean
         id="ledgerReader"
-        class="org.iot.soft.model.BCReader"
+        class="org.iot.soft.model.LedgerReader"
         init-method="start"
         destroy-method="stop"
     />
     
     <bean
         id="ledgerWriter"
-        class="org.iot.soft.model.BCWriter"
+        class="org.iot.soft.model.LedgerWriter"
         init-method="start"
         destroy-method="stop"
     />

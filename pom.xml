@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.iot.soft</groupId>
-    <artifactId>SOFT-IOT-BC-Manager</artifactId>
+    <artifactId>SOFT-IoT-DLT-Client-Tangle</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
-    <name>SOFT-IOT-BC-Manager Blueprint Bundle</name>
-    <description>SOFT-IOT-BC-Manager OSGi blueprint bundle project.</description>
+    <name>SOFT-IoT-DLT-Client-Tangle</name>
+    <description>SOFT-IOT-DLT-Client-Tangle OSGi blueprint bundle project.</description>
     
     <repositories>
         <repository>
