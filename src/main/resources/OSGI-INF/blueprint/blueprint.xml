@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="eager">
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+           xsi:schemaLocation="
+             http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
+             http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+    
+    <cm:property-placeholder
+        persistent-id="soft.iot.dlt.client.tangle"
+        update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="protocol" value="https" />
+            <cm:property name="URL" value="nodes.devnet.iota.org" />
+            <cm:property name="port" value="443" />
+            <cm:property name="DEPTH" value="443" />
+            <cm:property name="MWM" value="9" />
+            <cm:property name="SECURITY_LEVEL" value="2" />
+            <cm:property name="VALUE" value="0" />
+        </cm:default-properties>
+    </cm:property-placeholder>
     
     <service
         id="ILedgerWriterService"
@@ -34,5 +52,14 @@
         init-method="start"
         destroy-method="stop"
     />
+        
+    <bean
+        id="iotaClient"
+        class="dlt.client.tangle.model.IotaClient">
+        
+        <argument value="${protocol}"/>
+        <argument value="${URL}"/>
+        <argument value="${port}"/>
+    </bean>
 
 </blueprint>
