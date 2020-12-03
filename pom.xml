@@ -3,7 +3,7 @@
     
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>br.uefs.ecomp.dlt.iot.soft</groupId>
+    <groupId>br.uefs.larsid.dlt.iot.soft</groupId>
     <artifactId>SOFT-IoT-DLT-Client-Tangle</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
