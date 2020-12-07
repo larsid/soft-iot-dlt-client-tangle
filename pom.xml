@@ -41,11 +41,12 @@
                         <Embed-Dependency>jota;scope=compile|runtime;inline=false</Embed-Dependency>
                         <Embed-StripGroup>true</Embed-StripGroup>
                         <Embed-Transitive>true</Embed-Transitive>
+                        <Embed-Directory>target/dependency</Embed-Directory>
                         <Export-Package>
-                            dlt.client.tangle.*
+                            {local-packages}
                         </Export-Package>
                         <Import-Package>
-                            org.iota.jota.*;
+                            org.iota.jota.*,
                             javax.net.*;
                         </Import-Package>
                     </instructions>
