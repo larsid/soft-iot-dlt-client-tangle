@@ -41,9 +41,8 @@
                         <Embed-Dependency>jota;scope=compile|runtime;inline=false</Embed-Dependency>
                         <Embed-StripGroup>true</Embed-StripGroup>
                         <Embed-Transitive>true</Embed-Transitive>
-                        <Embed-Directory>target/dependency</Embed-Directory>
                         <Export-Package>
-                            {local-packages}
+                            dlt.client.tangle.*;
                         </Export-Package>
                         <Import-Package>
                             org.iota.jota.*,

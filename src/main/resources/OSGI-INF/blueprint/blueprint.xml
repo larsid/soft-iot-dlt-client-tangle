@@ -23,43 +23,32 @@
     <service
         id="ILedgerWriterService"
         ref="ledgerWriter"
-        interface="dlt.client.tangle.services.ILedgerWriter"
-    />
+        interface="dlt.client.tangle.services.ILedgerWriter"/>
     
     <service
         id="ILedgerReaderService"
         ref="ledgerReader"
-        interface="dlt.client.tangle.services.ILedgerReader"
-    />
-    
-    <bean 
-        id="ledgerService"
-        class="dlt.client.tangle.activator.Activator"
-        init-method="start"
-        destroy-method="stop"
-    />
-
+        interface="dlt.client.tangle.services.ILedgerReader"/>
+  
     <bean
         id="ledgerReader"
         class="dlt.client.tangle.model.LedgerReader"
         init-method="start"
-        destroy-method="stop"
-    />
+        destroy-method="stop"/>
     
     <bean
         id="ledgerWriter"
         class="dlt.client.tangle.model.LedgerWriter"
         init-method="start"
-        destroy-method="stop"
-    />
+        destroy-method="stop"/>
         
-    <bean
+<!--    <bean
         id="iotaClient"
         class="dlt.client.tangle.model.IotaClient">
         
         <argument value="${protocol}"/>
         <argument value="${URL}"/>
         <argument value="${port}"/>
-    </bean>
+    </bean>-->
 
 </blueprint>
