@@ -11,12 +11,13 @@
         update-strategy="reload">
         <cm:default-properties>
             <cm:property name="protocol" value="https" />
-            <cm:property name="URL" value="nodes.devnet.iota.org" />
-            <cm:property name="port" value="443" />
+            <cm:property name="DLT_URL" value="nodes.devnet.iota.org" />
+            <cm:property name="DLT_PORT" value="443" />
             <cm:property name="DEPTH" value="443" />
             <cm:property name="MWM" value="9" />
             <cm:property name="SECURITY_LEVEL" value="2" />
             <cm:property name="VALUE" value="0" />
+            <cm:property name="BUFFER_MAX_LEN" value="128" />
         </cm:default-properties>
     </cm:property-placeholder>
     
@@ -31,24 +32,30 @@
         interface="dlt.client.tangle.services.ILedgerReader"/>
   
     <bean
+        id="ZMQServer"
+        class="dlt.client.tangle.model.ZMQServer"
+        init-method="start"
+        destroy-method="stop">
+        <argument value="${BUFFER_MAX_LEN}"/>
+    </bean>
+    
+    <bean
         id="ledgerReader"
         class="dlt.client.tangle.model.LedgerReader"
         init-method="start"
-        destroy-method="stop"/>
+        destroy-method="stop">
+        <property name="ZMQServer" ref="ZMQServer"/>
+    </bean>
     
     <bean
         id="ledgerWriter"
         class="dlt.client.tangle.model.LedgerWriter"
         init-method="start"
-        destroy-method="stop"/>
-        
-<!--    <bean
-        id="iotaClient"
-        class="dlt.client.tangle.model.IotaClient">
-        
+        destroy-method="stop">
         <argument value="${protocol}"/>
-        <argument value="${URL}"/>
-        <argument value="${port}"/>
-    </bean>-->
+        <argument value="${DLT_URL}"/>
+        <argument value="${DLT_PORT}"/>
+        <argument value="${BUFFER_MAX_LEN}"/>
+    </bean>
 
 </blueprint>

@@ -1,4 +1,3 @@
-
 package dlt.client.tangle.services;
 
 /**
@@ -7,4 +6,8 @@ package dlt.client.tangle.services;
  * @version 0.0.1
  */
 public interface ILedgerReader {
+
+    public void subscribe(String topic, ILedgerSubscriber subscriber);
+
+    public void unsubscribe(String topic, ILedgerSubscriber subscriber);
 }
