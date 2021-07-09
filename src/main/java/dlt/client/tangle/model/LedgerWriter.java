@@ -2,6 +2,7 @@ package dlt.client.tangle.model;
 
 import com.google.gson.Gson;
 import dlt.client.tangle.services.ILedgerWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -21,7 +22,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     private IotaAPI api;
     private Thread DLTOutboundMonitor;
     private final BlockingQueue<Transaction> DLTOutboundBuffer;
-    
+
     private final String address;
     private final int depth;
     private final int minimumWeightMagnitude;
@@ -74,14 +75,15 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     private void writeToTangle(String tagGroup, String message) {
         String myRandomSeed = SeedRandomGenerator.generateNewSeed();
         String messageTrytes = TrytesConverter.asciiToTrytes(message);
-        String tagTrytes = TrytesConverter.asciiToTrytes(tagGroup); 
+        String tagTrytes = TrytesConverter.asciiToTrytes(tagGroup);
         Transfer zeroValueTransaction = new Transfer(address, 0, messageTrytes, tagTrytes);
-
+        List<Transfer> transfers = new ArrayList(1);
+        transfers.add(zeroValueTransaction);
         SendTransferResponse response = api.sendTransfer(myRandomSeed,
                 securityLevel,
                 depth,
                 minimumWeightMagnitude,
-                List.of(zeroValueTransaction),
+                transfers,
                 null, null, false, false, null);
 
     }
