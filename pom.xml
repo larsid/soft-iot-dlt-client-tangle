@@ -44,7 +44,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Embed-Dependency>jota;scope=compile|runtime;inline=false</Embed-Dependency>
+                        <Embed-Dependency>jota;jeromq;scope=compile|runtime;inline=false</Embed-Dependency>
                         <Embed-StripGroup>true</Embed-StripGroup>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Export-Package>

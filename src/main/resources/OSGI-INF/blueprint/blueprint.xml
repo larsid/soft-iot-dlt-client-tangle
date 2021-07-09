@@ -56,6 +56,10 @@
         <argument value="${DLT_URL}"/>
         <argument value="${DLT_PORT}"/>
         <argument value="${BUFFER_MAX_LEN}"/>
+        <argument value="${ADDRESS}"/>
+        <argument value="${DEPTH}"/>
+        <argument value="${MWM}"/>
+        <argument value="${SECURITY_LEVEL}"/>
     </bean>
 
 </blueprint>

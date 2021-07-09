@@ -1,9 +1,15 @@
 package dlt.client.tangle.model;
 
+import com.google.gson.Gson;
 import dlt.client.tangle.services.ILedgerWriter;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import org.iota.jota.IotaAPI;
+import org.iota.jota.dto.response.SendTransferResponse;
+import org.iota.jota.model.Transfer;
+import org.iota.jota.utils.SeedRandomGenerator;
+import org.iota.jota.utils.TrytesConverter;
 
 /**
  *
@@ -15,13 +21,22 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     private IotaAPI api;
     private Thread DLTOutboundMonitor;
     private final BlockingQueue<Transaction> DLTOutboundBuffer;
+    
+    private final String address;
+    private final int depth;
+    private final int minimumWeightMagnitude;
+    private final int securityLevel;
 
-    public LedgerWriter(String protocol, String url, int port, int bufferSize) {
+    public LedgerWriter(String protocol, String url, int port, int bufferSize, String address, int depth, int mwm, int securityLevel) {
         this.api = new IotaAPI.Builder()
                 .protocol(protocol)
                 .host(url)
                 .port(port)
                 .build();
+        this.address = address;
+        this.depth = depth;
+        this.minimumWeightMagnitude = mwm;
+        this.securityLevel = securityLevel;
         this.DLTOutboundBuffer = new ArrayBlockingQueue(bufferSize);
     }
 
@@ -44,12 +59,30 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
 
     @Override
     public void run() {
+        Gson gson = new Gson();
         while (!this.DLTOutboundMonitor.isInterrupted()) {
             try {
                 Transaction transaction = this.DLTOutboundBuffer.take();
+                String transactionJson = gson.toJson(transaction);
+                this.writeToTangle(transaction.getGroup(), transactionJson);
             } catch (InterruptedException ex) {
                 this.DLTOutboundMonitor.interrupt();
             }
         }
+    }
+
+    private void writeToTangle(String tagGroup, String message) {
+        String myRandomSeed = SeedRandomGenerator.generateNewSeed();
+        String messageTrytes = TrytesConverter.asciiToTrytes(message);
+        String tagTrytes = TrytesConverter.asciiToTrytes(tagGroup); 
+        Transfer zeroValueTransaction = new Transfer(address, 0, messageTrytes, tagTrytes);
+
+        SendTransferResponse response = api.sendTransfer(myRandomSeed,
+                securityLevel,
+                depth,
+                minimumWeightMagnitude,
+                List.of(zeroValueTransaction),
+                null, null, false, false, null);
+
     }
 }

@@ -31,6 +31,7 @@ public class LedgerReader implements ILedgerReader, Runnable {
     }
 
     public void stop() {
+        this.server.stop();
         this.DLTInboundMonitor.interrupt();
     }
 
@@ -44,6 +45,7 @@ public class LedgerReader implements ILedgerReader, Runnable {
             Set<ILedgerSubscriber> subscribers = this.topics.get(topic);
             if (subscribers != null) {
                 subscribers.add(subscriber);
+                this.server.subscribe(topic);
             } else {
                 subscribers = new HashSet();
                 subscribers.add(subscriber);
@@ -58,6 +60,7 @@ public class LedgerReader implements ILedgerReader, Runnable {
             Set<ILedgerSubscriber> subscribers = this.topics.get(topic);
             if (subscribers != null && !subscribers.isEmpty()) {
                 subscribers.remove(subscriber);
+                this.server.unsubscribe(topic);
             } else {
                 subscribers = new HashSet();
                 this.topics.put(topic, subscribers);
@@ -70,6 +73,13 @@ public class LedgerReader implements ILedgerReader, Runnable {
         while (!this.DLTInboundMonitor.isInterrupted()) {
             try {
                 this.server.take();
+                String receivedMessage = this.server.take();
+                if (receivedMessage != null && receivedMessage.contains("/")) {
+                    String[] data = receivedMessage.split("/");
+                    String topic = data[0];
+                    String message = data[1];
+                    notifyAll(topic, message);
+                }
             } catch (InterruptedException ex) {
                 this.DLTInboundMonitor.interrupt();
             }
