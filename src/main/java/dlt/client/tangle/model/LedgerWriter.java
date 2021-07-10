@@ -1,12 +1,15 @@
 package dlt.client.tangle.model;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import dlt.client.tangle.services.ILedgerWriter;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import org.iota.jota.IotaAPI;
+import org.iota.jota.dto.response.GetBundleResponse;
 import org.iota.jota.dto.response.SendTransferResponse;
 import org.iota.jota.error.ArgumentException;
 import org.iota.jota.model.Transfer;
@@ -71,6 +74,25 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
                 this.DLTOutboundMonitor.interrupt();
             }
         }
+    }
+
+    /*
+    Método temporário.
+     */
+    public Transaction getTransactionByHash(String hashTransaction) {
+        GetBundleResponse response = api.getBundle(hashTransaction);
+
+        String trytes = response.getTransactions()
+                .get(0)
+                .getSignatureFragments()
+                .substring(0, 2186);
+
+        String transactionJSON = TrytesConverter.trytesToAscii(trytes);
+
+        Gson gson = new Gson();
+        JsonReader reader = new JsonReader(new StringReader(transactionJSON));
+        reader.setLenient(true);
+        return gson.fromJson(reader, Transaction.class);
     }
 
     private void writeToTangle(String tagGroup, String message) {
