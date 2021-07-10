@@ -18,6 +18,9 @@ public class Transaction {
     private long timestamp;
     private String deviceSwap;
 
+    public Transaction() {
+    }
+
     public Transaction(String source, TransactionType type, double avgLoad,
             double lastLoad, boolean lbEntry, String group, String target,
             long timestamp, String deviceSwap) {

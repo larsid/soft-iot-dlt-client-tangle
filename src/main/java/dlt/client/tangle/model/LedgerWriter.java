@@ -8,6 +8,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import org.iota.jota.IotaAPI;
 import org.iota.jota.dto.response.SendTransferResponse;
+import org.iota.jota.error.ArgumentException;
 import org.iota.jota.model.Transfer;
 import org.iota.jota.utils.SeedRandomGenerator;
 import org.iota.jota.utils.TrytesConverter;
@@ -79,12 +80,14 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
         Transfer zeroValueTransaction = new Transfer(address, 0, messageTrytes, tagTrytes);
         List<Transfer> transfers = new ArrayList(1);
         transfers.add(zeroValueTransaction);
-        SendTransferResponse response = api.sendTransfer(myRandomSeed,
-                securityLevel,
-                depth,
-                minimumWeightMagnitude,
-                transfers,
-                null, null, false, false, null);
-
+        try {
+            SendTransferResponse response = api.sendTransfer(myRandomSeed,
+                    securityLevel,
+                    depth,
+                    minimumWeightMagnitude,
+                    transfers,
+                    null, null, false, false, null);
+        } catch (ArgumentException e) {
+        }
     }
 }
