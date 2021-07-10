@@ -69,7 +69,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
             try {
                 Transaction transaction = this.DLTOutboundBuffer.take();
                 String transactionJson = gson.toJson(transaction);
-                this.writeToTangle(transaction.getGroup(), transactionJson);
+                this.writeToTangle(transaction.getGroup(), transactionJson); //Group = 2.0.0 ? || group = cloud/c1 ?
             } catch (InterruptedException ex) {
                 this.DLTOutboundMonitor.interrupt();
             }

@@ -2,7 +2,6 @@ package dlt.client.tangle.services;
 
 import dlt.client.tangle.model.Transaction;
 
-
 /**
  *
  * @author Uellington Damasceno
@@ -11,4 +10,6 @@ import dlt.client.tangle.model.Transaction;
 public interface ILedgerWriter {
 
     public void put(Transaction transaction) throws InterruptedException;
+
+    public Transaction getTransactionByHash(String hashTransaction);
 }
