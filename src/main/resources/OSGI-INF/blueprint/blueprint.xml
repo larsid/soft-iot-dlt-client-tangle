@@ -10,7 +10,7 @@
         persistent-id="soft.iot.dlt.client.tangle"
         update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="protocol" value="https" />
+            <cm:property name="DLT_PROTOCOL" value="https" />
             <cm:property name="DLT_URL" value="nodes.devnet.iota.org" />
             <cm:property name="DLT_PORT" value="443" />
             <cm:property name="DEPTH" value="443" />
@@ -18,6 +18,7 @@
             <cm:property name="SECURITY_LEVEL" value="2" />
             <cm:property name="VALUE" value="0" />
             <cm:property name="BUFFER_MAX_LEN" value="128" />
+            <cm:property name="ZMQ_SOCKET_URL" value="tcp://zmq.devnet.iota.org:5556"/>
         </cm:default-properties>
     </cm:property-placeholder>
     
@@ -37,6 +38,8 @@
         init-method="start"
         destroy-method="stop">
         <argument value="${BUFFER_MAX_LEN}"/>
+        <argument value="${ZMQ_SOCKET_URL}"/>
+        <argument value="${ADDRESS}"/>
     </bean>
     
     <bean
@@ -52,7 +55,7 @@
         class="dlt.client.tangle.model.LedgerWriter"
         init-method="start"
         destroy-method="stop">
-        <argument value="${protocol}"/>
+        <argument value="${DLT_PROTOCOL}"/>
         <argument value="${DLT_URL}"/>
         <argument value="${DLT_PORT}"/>
         <argument value="${BUFFER_MAX_LEN}"/>

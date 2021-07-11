@@ -45,11 +45,11 @@ public class LedgerReader implements ILedgerReader, Runnable {
             Set<ILedgerSubscriber> subscribers = this.topics.get(topic);
             if (subscribers != null) {
                 subscribers.add(subscriber);
-                this.server.subscribe(topic);
             } else {
                 subscribers = new HashSet();
                 subscribers.add(subscriber);
                 this.topics.put(topic, subscribers);
+                this.server.subscribe(topic);
             }
         }
     }
@@ -60,11 +60,10 @@ public class LedgerReader implements ILedgerReader, Runnable {
             Set<ILedgerSubscriber> subscribers = this.topics.get(topic);
             if (subscribers != null && !subscribers.isEmpty()) {
                 subscribers.remove(subscriber);
-                this.server.unsubscribe(topic);
-            } else {
-                subscribers = new HashSet();
-                this.topics.put(topic, subscribers);
-            }
+                if (subscribers.isEmpty()) {
+                    this.server.unsubscribe(topic);
+                }
+            } 
         }
     }
 

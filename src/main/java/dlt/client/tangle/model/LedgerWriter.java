@@ -38,10 +38,12 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
                 .host(url)
                 .port(port)
                 .build();
+        
         this.address = address;
         this.depth = depth;
         this.minimumWeightMagnitude = mwm;
         this.securityLevel = securityLevel;
+        
         this.DLTOutboundBuffer = new ArrayBlockingQueue(bufferSize);
     }
 
@@ -69,7 +71,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
             try {
                 Transaction transaction = this.DLTOutboundBuffer.take();
                 String transactionJson = gson.toJson(transaction);
-                this.writeToTangle(transaction.getGroup(), transactionJson); //Group = 2.0.0 ? || group = cloud/c1 ?
+                this.writeToTangle(transaction.getGroup(), transactionJson);
             } catch (InterruptedException ex) {
                 this.DLTOutboundMonitor.interrupt();
             }
@@ -79,6 +81,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     /*
     Método temporário.
      */
+    @Override
     public Transaction getTransactionByHash(String hashTransaction) {
         GetBundleResponse response = api.getBundle(hashTransaction);
 
@@ -99,9 +102,11 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
         String myRandomSeed = SeedRandomGenerator.generateNewSeed();
         String messageTrytes = TrytesConverter.asciiToTrytes(message);
         String tagTrytes = TrytesConverter.asciiToTrytes(tagGroup);
+       
         Transfer zeroValueTransaction = new Transfer(address, 0, messageTrytes, tagTrytes);
         List<Transfer> transfers = new ArrayList(1);
         transfers.add(zeroValueTransaction);
+        
         try {
             SendTransferResponse response = api.sendTransfer(myRandomSeed,
                     securityLevel,
@@ -110,6 +115,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
                     transfers,
                     null, null, false, false, null);
         } catch (ArgumentException e) {
+            System.out.println("Erro nos argumentos.");
         }
     }
 }

@@ -17,14 +17,22 @@ public class ZMQServer implements Runnable {
     private Thread serverThread;
     private final BlockingQueue<String> DLTInboundBuffer;
     private ZMQ.Socket serverListener;
+    private String socketURL;
+    
+    //Temp
+    private String address;
 
-    public ZMQServer(int bufferSize) {
+    public ZMQServer(int bufferSize, String socketURL, String address) {
         this.DLTInboundBuffer = new ArrayBlockingQueue(bufferSize);
         this.serverListener = ZMQ.context(1).socket(SocketType.SUB);
+        this.socketURL = socketURL;
+        this.address = address;
     }
 
     public void start() {
         if (this.serverThread == null) {
+            System.out.println("SocketURL: "+ this.socketURL);
+            this.serverListener.connect(this.socketURL);
             this.serverThread = new Thread(this);
             this.serverThread.setName("CLIENT_TANGLE/ZMQ_SERVER");
             this.serverThread.start();
@@ -50,12 +58,6 @@ public class ZMQServer implements Runnable {
 
     @Override
     public void run() {
-        //usando configurações de teste até a definição dos tópicos
-        serverListener.connect("tcp://zmq.devnet.iota.org:5556");
-        serverListener.subscribe("tx");
-        serverListener.subscribe("sn");
-        //Remover após incluir a tangle local
-        String address = "ZLGVEQ9JUZZWCZXLWVNTHBDX9G9KZTJP9VEERIIFHY9SIQKYBVAHIMLHXPQVE9IXFDDXNHQINXJDRPFDXNYVAPLZAW";
         while (!this.serverThread.isInterrupted()) {
             byte[] reply = serverListener.recv(0);
             String[] data = (new String(reply).split(" "));
