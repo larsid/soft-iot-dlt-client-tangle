@@ -1,6 +1,6 @@
 package dlt.client.tangle.services;
 
-import dlt.client.tangle.model.Transaction;
+import dlt.client.tangle.model.transactions.Transaction;
 
 /**
  *

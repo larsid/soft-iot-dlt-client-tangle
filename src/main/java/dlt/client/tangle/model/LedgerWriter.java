@@ -1,5 +1,6 @@
 package dlt.client.tangle.model;
 
+import dlt.client.tangle.model.transactions.Transaction;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import dlt.client.tangle.services.ILedgerWriter;
@@ -106,7 +107,6 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
         Transfer zeroValueTransaction = new Transfer(address, 0, messageTrytes, tagTrytes);
         List<Transfer> transfers = new ArrayList(1);
         transfers.add(zeroValueTransaction);
-        
         try {
             SendTransferResponse response = api.sendTransfer(myRandomSeed,
                     securityLevel,
@@ -114,6 +114,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
                     minimumWeightMagnitude,
                     transfers,
                     null, null, false, false, null);
+
         } catch (ArgumentException e) {
             System.out.println("Erro nos argumentos.");
         }
