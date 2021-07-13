@@ -6,9 +6,9 @@ import dlt.client.tangle.enums.TransactionType;
  *
  * @author Uellington Damasceno
  */
-public class LBReply extends Transaction {
+public class LBReply extends TargetedTransaction {
 
-    public LBReply(String source, String group) {
-        super(source, group, TransactionType.LB_ENTRY_REPLY);
+    public LBReply(String source, String group, String target) {
+        super(source, group, TransactionType.LB_ENTRY_REPLY, target);
     }
 }

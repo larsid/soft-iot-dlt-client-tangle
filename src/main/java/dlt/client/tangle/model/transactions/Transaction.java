@@ -12,7 +12,7 @@ public abstract class Transaction {
     private final String group;
     private final TransactionType type;
 
-    private final long createdAt;
+    private long createdAt;
     private long publishedAt;
 
     public Transaction(String source, String group, TransactionType type) {
