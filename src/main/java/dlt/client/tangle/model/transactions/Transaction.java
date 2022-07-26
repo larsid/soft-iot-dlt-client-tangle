@@ -6,7 +6,7 @@ import dlt.client.tangle.enums.TransactionType;
  *
  * @author Uellington Damasceno
  */
-public abstract class Transaction {
+public  class Transaction {
 
     private final String source;
     private final String group;

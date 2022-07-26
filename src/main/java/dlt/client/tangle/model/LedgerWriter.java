@@ -1,7 +1,15 @@
 package dlt.client.tangle.model;
 
+import dlt.client.tangle.enums.TransactionType;
+import dlt.client.tangle.model.transactions.LBReply;
+import dlt.client.tangle.model.transactions.Reply;
+import dlt.client.tangle.model.transactions.Request;
+import dlt.client.tangle.model.transactions.Status;
+import dlt.client.tangle.model.transactions.TargetedTransaction;
 import dlt.client.tangle.model.transactions.Transaction;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import dlt.client.tangle.services.ILedgerWriter;
 import java.io.StringReader;
@@ -19,7 +27,7 @@ import org.iota.jota.utils.TrytesConverter;
 
 /**
  *
- * @author Uellington Damasceno
+ * @author  Antonio Crispim,,Uellington Damasceno
  * @version 0.0.1
  */
 public class LedgerWriter implements ILedgerWriter, Runnable {
@@ -27,6 +35,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     private IotaAPI api;
     private Thread DLTOutboundMonitor;
     private final BlockingQueue<Transaction> DLTOutboundBuffer;
+    
 
     private final String address;
     private final int depth;
@@ -40,7 +49,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
                 .port(port)
                 .build();
         
-        this.address = address;
+        this.address = address+"NYVAPLZAW";
         this.depth = depth;
         this.minimumWeightMagnitude = mwm;
         this.securityLevel = securityLevel;
@@ -94,17 +103,48 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
 
         String transactionJSON = TrytesConverter.trytesToAscii(trytes);
 
-        Gson gson = new Gson();
-        JsonReader reader = new JsonReader(new StringReader(transactionJSON));
-        reader.setLenient(true);
-        return gson.fromJson(reader, Transaction.class);
+        return getTypeTransaction(transactionJSON);
+        
+        
     }
 
-    private void writeToTangle(String tagGroup, String message) {
+    private Transaction getTypeTransaction(String transactionJSON) {
+    	System.out.println("Mensagem JSON");
+    	System.out.println(transactionJSON);
+        JsonParser jsonparser = new JsonParser();
+        JsonReader reader = new JsonReader(new StringReader(transactionJSON));
+        reader.setLenient(true);
+
+    	JsonObject jsonObject = jsonparser.parse(reader).getAsJsonObject();
+
+
+        String type = jsonObject.get("type").getAsString();
+        Gson gson = new Gson();
+        reader = new JsonReader(new StringReader(transactionJSON));
+        reader.setLenient(true);
+
+        
+        if(type.equals(TransactionType.LB_ENTRY.name()))
+        	return gson.fromJson(reader, Status.class);
+        else if(type.equals(TransactionType.LB_ENTRY_REPLY.name()))
+        	return gson.fromJson(reader, LBReply.class);
+        else if(type.equals(TransactionType.LB_REPLY.name()))
+        	return gson.fromJson(reader, Reply.class);
+        else if(type.equals(TransactionType.LB_REQUEST.name()))
+        	return gson.fromJson(reader, Request.class);
+        else if(type.equals(TransactionType.LB_STATUS.name()))
+        	return gson.fromJson(reader, Status.class);
+        	
+        return null;
+        	
+
+	}
+
+	private void writeToTangle(String tagGroup, String message) {
         String myRandomSeed = SeedRandomGenerator.generateNewSeed();
         String messageTrytes = TrytesConverter.asciiToTrytes(message);
         String tagTrytes = TrytesConverter.asciiToTrytes(tagGroup);
-       
+
         Transfer zeroValueTransaction = new Transfer(address, 0, messageTrytes, tagTrytes);
         List<Transfer> transfers = new ArrayList(1);
         transfers.add(zeroValueTransaction);
@@ -118,6 +158,34 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
 
         } catch (ArgumentException e) {
             System.out.println("Erro nos argumentos.");
+            e.printStackTrace();
         }
     }
+	
+	public static void main(String[] args) {
+    	String message = "{\"avgLoad\":3.0,\"lastLoad\":3.0,\"source\":\"cloud/c1/172.17.0.2\",\"group\":\"cloud/c1\",\"type\":\"LB_STATUS\",\"createdAt\":1631037998525,\"publishedAt\":1631037998525}";
+    	System.out.println("Mensagem JSON");
+    	System.out.println(message);
+        JsonParser jsonparser = new JsonParser();
+        JsonReader reader = new JsonReader(new StringReader(message));
+        reader.setLenient(true);
+
+    	JsonObject jsonObject = jsonparser.parse(reader).getAsJsonObject();
+
+
+        String type = jsonObject.get("type").getAsString();
+        Gson gson = new Gson();
+        reader = new JsonReader(new StringReader(message));
+        reader.setLenient(true);
+	        if(type.equals(TransactionType.LB_ENTRY.name()))
+	        	 gson.fromJson(reader, Status.class);
+	        else if(type.equals(TransactionType.LB_ENTRY_REPLY.name()))
+	        	 gson.fromJson(reader, LBReply.class);
+	        else if(type.equals(TransactionType.LB_REPLY.name()))
+	        	 gson.fromJson(reader, Reply.class);
+	        else if(type.equals(TransactionType.LB_REQUEST.name()))
+	        	 gson.fromJson(reader, Request.class);
+	        else if(type.equals(TransactionType.LB_STATUS.name()))
+	        	 gson.fromJson(reader, Status.class);
+	} 
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  *
- * @author Uellington Damasceno
+ * @author  Antonio Crispim,Uellington Damasceno
  * @version 0.1.0
  */
 public class LedgerReader implements ILedgerReader, Runnable {
@@ -71,9 +71,10 @@ public class LedgerReader implements ILedgerReader, Runnable {
     public void run() {
         while (!this.DLTInboundMonitor.isInterrupted()) {
             try {
-                this.server.take();
                 String receivedMessage = this.server.take();
+
                 if (receivedMessage != null && receivedMessage.contains("/")) {
+
                     String[] data = receivedMessage.split("/");
                     String topic = data[0];
                     String message = data[1];
@@ -86,9 +87,11 @@ public class LedgerReader implements ILedgerReader, Runnable {
     }
 
     private void notifyAll(String topic, Object object) {
+    	
         if (topic != null && !topic.isEmpty()) {
             Set<ILedgerSubscriber> subscribers = this.topics.get(topic);
             if (subscribers != null && !subscribers.isEmpty()) {
+
                 subscribers.forEach(sub -> sub.update(object));
             }
         }

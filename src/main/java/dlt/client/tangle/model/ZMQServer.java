@@ -9,7 +9,7 @@ import org.zeromq.ZMQ;
 
 /**
  *
- * @author Uellington Damasceno
+ * @author  Antonio Crispim, Uellington Damasceno
  * @version 0.0.2
  */
 public class ZMQServer implements Runnable {
@@ -45,6 +45,10 @@ public class ZMQServer implements Runnable {
     }
 
     public void subscribe(String topic) {
+    	System.out.println("Se INSCREVEU ");
+    	System.out.println(topic);
+
+
         this.serverListener.subscribe(topic);
     }
 
@@ -54,16 +58,21 @@ public class ZMQServer implements Runnable {
 
     public String take() throws InterruptedException {
         return this.DLTInboundBuffer.take();
+
     }
 
     @Override
     public void run() {
+    	System.out.println("ADDRES ");
+    	System.out.println(address);
         while (!this.serverThread.isInterrupted()) {
             byte[] reply = serverListener.recv(0);
             String[] data = (new String(reply).split(" "));
+            
             if (data[0].equals("tx") && data[2].equals(address)) {
                 this.putReceivedMessageBuffer("tx/" + data[1]);
             } else if (data[0].equals("sn") && (data[3].equals(address))) {
+
                 this.putReceivedMessageBuffer("sn/" + data[2]);
             }
         }
@@ -71,7 +80,9 @@ public class ZMQServer implements Runnable {
 
     private void putReceivedMessageBuffer(String receivedMessage) {
         try {
+
             this.DLTInboundBuffer.put(receivedMessage);
+
         } catch (InterruptedException ex) {
             Logger.getLogger(ZMQServer.class
                     .getName()).log(Level.SEVERE, null, ex);

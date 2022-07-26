@@ -10,15 +10,16 @@
         persistent-id="soft.iot.dlt.client.tangle"
         update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="DLT_PROTOCOL" value="https" />
-            <cm:property name="DLT_URL" value="nodes.devnet.iota.org" />
-            <cm:property name="DLT_PORT" value="443" />
+            <cm:property name="DLT_PROTOCOL" value="http" />
+            <cm:property name="DLT_URL" value="10.158.0.3" />
+            <cm:property name="DLT_PORT" value="0" />
             <cm:property name="DEPTH" value="443" />
             <cm:property name="MWM" value="9" />
             <cm:property name="SECURITY_LEVEL" value="2" />
             <cm:property name="VALUE" value="0" />
             <cm:property name="BUFFER_MAX_LEN" value="128" />
-            <cm:property name="ZMQ_SOCKET_URL" value="tcp://zmq.devnet.iota.org:5556"/>
+            <cm:property name="ZMQ_SOCKET_URL" value="tcp://10.158.0.3:5556"/>
+            <cm:property name="ADDRESS" value="ZLGVEQ9JUZZWCZXLWVNTHBDX9G9KZTJP9VEERIIFHY9SIQKYBVAHIMLHXPQVE9IXFDDXNHQINXJDRPFDX"/>
         </cm:default-properties>
     </cm:property-placeholder>
     
