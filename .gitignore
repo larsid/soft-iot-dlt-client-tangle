@@ -1,4 +1,6 @@
 old bundles/
 target/
 src/main/java/dlt/client/tangle/model/IotaClient.java
-
+.project
+.classpath
+.settings
