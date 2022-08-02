@@ -9,7 +9,7 @@ import org.zeromq.ZMQ;
 
 /**
  *
- * @author  Antonio Crispim, Uellington Damasceno
+ * @author Allan Capistrano, Antonio Crispim, Uellington Damasceno
  * @version 0.0.2
  */
 public class ZMQServer implements Runnable {
@@ -22,16 +22,24 @@ public class ZMQServer implements Runnable {
     //Temp
     private String address;
 
-    public ZMQServer(int bufferSize, String socketURL, String address) {
+    public ZMQServer(
+      int bufferSize, 
+      String socketProtocol, 
+      String socketURL, 
+      String socketPort, 
+      String address
+    ) {
         this.DLTInboundBuffer = new ArrayBlockingQueue(bufferSize);
         this.serverListener = ZMQ.context(1).socket(SocketType.SUB);
-        this.socketURL = socketURL;
+        this.socketURL 
+          = String.format("%s://%s:%s", socketProtocol, socketURL, socketPort);
         this.address = address;
     }
 
     public void start() {
         if (this.serverThread == null) {
             System.out.println("SocketURL: "+ this.socketURL);
+
             this.serverListener.connect(this.socketURL);
             this.serverThread = new Thread(this);
             this.serverThread.setName("CLIENT_TANGLE/ZMQ_SERVER");
@@ -63,8 +71,7 @@ public class ZMQServer implements Runnable {
 
     @Override
     public void run() {
-    	System.out.println("ADDRES ");
-    	System.out.println(address);
+    	System.out.println("ADDRESS: " + address);
         while (!this.serverThread.isInterrupted()) {
             byte[] reply = serverListener.recv(0);
             String[] data = (new String(reply).split(" "));
