@@ -21,7 +21,7 @@
             <cm:property name="ZMQ_SOCKET_PROTOCOL" value="tcp"/>
             <cm:property name="ZMQ_SOCKET_URL" value="zmq.devnet.iota.org"/>
             <cm:property name="ZMQ_SOCKET_PORT" value="5556"/>
-            <cm:property name="ADDRESS" value="ZLGVEQ9JUZZWCZXLWVNTHBDX9G9KZTJP9VEERIIFHY9SIQKYBVAHIMLHXPQVE9IXFDDXNHQINXJDRPFDXNYVAPLZAW"/>
+            <cm:property name="ADDRESS" value="ZLGVEQ9JUZZWCZXLWVNTHBDX9G9KZTJP9VEERIIFHY9SIQKYBVAHIMLHXPQVE9IXFDDXNHQINXJDRPFDX"/>
         </cm:default-properties>
     </cm:property-placeholder>
     

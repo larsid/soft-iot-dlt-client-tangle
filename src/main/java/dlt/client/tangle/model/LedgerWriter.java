@@ -9,6 +9,7 @@ import dlt.client.tangle.model.transactions.LBReply;
 import dlt.client.tangle.model.transactions.Reply;
 import dlt.client.tangle.model.transactions.Request;
 import dlt.client.tangle.model.transactions.Status;
+import dlt.client.tangle.model.transactions.TargetedTransaction;
 import dlt.client.tangle.model.transactions.Transaction;
 import dlt.client.tangle.services.ILedgerWriter;
 import java.io.StringReader;
@@ -53,7 +54,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     this.api =
       new IotaAPI.Builder().protocol(protocol).host(url).port(port).build();
 
-    this.address = address;
+    this.address = address + "NYVAPLZAW";
     this.depth = depth;
     this.minimumWeightMagnitude = mwm;
     this.securityLevel = securityLevel;
@@ -109,18 +110,19 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   }
 
   private Transaction getTypeTransaction(String transactionJSON) {
-    System.out.println("JSON Message:");
+    System.out.println("JSON Message");
     System.out.println(transactionJSON);
 
-    JsonParser jsonParser = new JsonParser();
+    JsonParser jsonparser = new JsonParser();
     JsonReader reader = new JsonReader(new StringReader(transactionJSON));
+
     reader.setLenient(true);
 
-    JsonObject jsonObject = jsonParser.parse(reader).getAsJsonObject();
+    JsonObject jsonObject = jsonparser.parse(reader).getAsJsonObject();
 
     String type = jsonObject.get("type").getAsString();
     Gson gson = new Gson();
-    
+
     reader = new JsonReader(new StringReader(transactionJSON));
     reader.setLenient(true);
 
