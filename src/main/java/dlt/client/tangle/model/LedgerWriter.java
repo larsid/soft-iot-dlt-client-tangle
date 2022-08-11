@@ -9,7 +9,6 @@ import dlt.client.tangle.model.transactions.LBReply;
 import dlt.client.tangle.model.transactions.Reply;
 import dlt.client.tangle.model.transactions.Request;
 import dlt.client.tangle.model.transactions.Status;
-import dlt.client.tangle.model.transactions.TargetedTransaction;
 import dlt.client.tangle.model.transactions.Transaction;
 import dlt.client.tangle.services.ILedgerWriter;
 import java.io.StringReader;
@@ -113,31 +112,32 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   }
 
   private Transaction getTypeTransaction(String transactionJSON) {
-    System.out.println("Mensagem JSON");
+    System.out.println("JSON Message:");
     System.out.println(transactionJSON);
-    JsonParser jsonparser = new JsonParser();
+
+    JsonParser jsonParser = new JsonParser();
     JsonReader reader = new JsonReader(new StringReader(transactionJSON));
     reader.setLenient(true);
 
-    JsonObject jsonObject = jsonparser.parse(reader).getAsJsonObject();
+    JsonObject jsonObject = jsonParser.parse(reader).getAsJsonObject();
 
     String type = jsonObject.get("type").getAsString();
     Gson gson = new Gson();
+    
     reader = new JsonReader(new StringReader(transactionJSON));
     reader.setLenient(true);
 
-    if (type.equals(TransactionType.LB_ENTRY.name())) return gson.fromJson(
-      reader,
-      Status.class
-    ); else if (
-      type.equals(TransactionType.LB_ENTRY_REPLY.name())
-    ) return gson.fromJson(reader, LBReply.class); else if (
-      type.equals(TransactionType.LB_REPLY.name())
-    ) return gson.fromJson(reader, Reply.class); else if (
-      type.equals(TransactionType.LB_REQUEST.name())
-    ) return gson.fromJson(reader, Request.class); else if (
-      type.equals(TransactionType.LB_STATUS.name())
-    ) return gson.fromJson(reader, Status.class);
+    if (type.equals(TransactionType.LB_ENTRY.name())) {
+      return gson.fromJson(reader, Status.class);
+    } else if (type.equals(TransactionType.LB_ENTRY_REPLY.name())) {
+      return gson.fromJson(reader, LBReply.class);
+    } else if (type.equals(TransactionType.LB_REPLY.name())) {
+      return gson.fromJson(reader, Reply.class);
+    } else if (type.equals(TransactionType.LB_REQUEST.name())) {
+      return gson.fromJson(reader, Request.class);
+    } else if (type.equals(TransactionType.LB_STATUS.name())) {
+      return gson.fromJson(reader, Status.class);
+    }
 
     return null;
   }
