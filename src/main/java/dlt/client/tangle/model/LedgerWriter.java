@@ -26,7 +26,7 @@ import org.iota.jota.utils.TrytesConverter;
 
 /**
  *
- * @author  Antonio Crispim, Uellington Damasceno
+ * @author  Allan Capistrano, Antonio Crispim, Uellington Damasceno
  * @version 0.0.1
  */
 public class LedgerWriter implements ILedgerWriter, Runnable {
@@ -53,7 +53,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     this.api =
       new IotaAPI.Builder().protocol(protocol).host(url).port(port).build();
 
-    this.address = address + "NYVAPLZAW";
+    this.address = address;
     this.depth = depth;
     this.minimumWeightMagnitude = mwm;
     this.securityLevel = securityLevel;
@@ -93,9 +93,6 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     }
   }
 
-  /*
-    Método temporário.
-     */
   @Override
   public Transaction getTransactionByHash(String hashTransaction) {
     GetBundleResponse response = api.getBundle(hashTransaction);
@@ -169,7 +166,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
         null
       );
     } catch (ArgumentException e) {
-      System.out.println("Erro nos argumentos.");
+      System.out.println("Error in arguments!");
       e.printStackTrace();
     }
   }
