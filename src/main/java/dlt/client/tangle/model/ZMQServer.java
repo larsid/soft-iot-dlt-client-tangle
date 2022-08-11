@@ -18,8 +18,6 @@ public class ZMQServer implements Runnable {
   private final BlockingQueue<String> DLTInboundBuffer;
   private ZMQ.Socket serverListener;
   private String socketURL;
-
-  //Temp
   private String address;
 
   public ZMQServer(
@@ -38,7 +36,7 @@ public class ZMQServer implements Runnable {
 
   public void start() {
     if (this.serverThread == null) {
-      System.out.println("SocketURL: " + this.socketURL);
+      System.out.println("Socket URL: " + this.socketURL);
 
       this.serverListener.connect(this.socketURL);
       this.serverThread = new Thread(this);
@@ -53,9 +51,7 @@ public class ZMQServer implements Runnable {
   }
 
   public void subscribe(String topic) {
-    System.out.println("Se INSCREVEU ");
-    System.out.println(topic);
-
+    System.out.println("Subscribe: " + topic);
     this.serverListener.subscribe(topic);
   }
 
@@ -69,7 +65,7 @@ public class ZMQServer implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("ADDRESS: " + address);
+    System.out.println("Address: " + address);
     while (!this.serverThread.isInterrupted()) {
       byte[] reply = serverListener.recv(0);
       String[] data = (new String(reply).split(" "));
