@@ -9,7 +9,6 @@ import dlt.client.tangle.model.transactions.LBReply;
 import dlt.client.tangle.model.transactions.Reply;
 import dlt.client.tangle.model.transactions.Request;
 import dlt.client.tangle.model.transactions.Status;
-import dlt.client.tangle.model.transactions.TargetedTransaction;
 import dlt.client.tangle.model.transactions.Transaction;
 import dlt.client.tangle.services.ILedgerWriter;
 import java.io.StringReader;
