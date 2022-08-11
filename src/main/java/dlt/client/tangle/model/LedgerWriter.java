@@ -161,31 +161,4 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
             e.printStackTrace();
         }
     }
-	
-	public static void main(String[] args) {
-    	String message = "{\"avgLoad\":3.0,\"lastLoad\":3.0,\"source\":\"cloud/c1/172.17.0.2\",\"group\":\"cloud/c1\",\"type\":\"LB_STATUS\",\"createdAt\":1631037998525,\"publishedAt\":1631037998525}";
-    	System.out.println("Mensagem JSON");
-    	System.out.println(message);
-        JsonParser jsonparser = new JsonParser();
-        JsonReader reader = new JsonReader(new StringReader(message));
-        reader.setLenient(true);
-
-    	JsonObject jsonObject = jsonparser.parse(reader).getAsJsonObject();
-
-
-        String type = jsonObject.get("type").getAsString();
-        Gson gson = new Gson();
-        reader = new JsonReader(new StringReader(message));
-        reader.setLenient(true);
-	        if(type.equals(TransactionType.LB_ENTRY.name()))
-	        	 gson.fromJson(reader, Status.class);
-	        else if(type.equals(TransactionType.LB_ENTRY_REPLY.name()))
-	        	 gson.fromJson(reader, LBReply.class);
-	        else if(type.equals(TransactionType.LB_REPLY.name()))
-	        	 gson.fromJson(reader, Reply.class);
-	        else if(type.equals(TransactionType.LB_REQUEST.name()))
-	        	 gson.fromJson(reader, Request.class);
-	        else if(type.equals(TransactionType.LB_STATUS.name()))
-	        	 gson.fromJson(reader, Status.class);
-	} 
 }
