@@ -62,6 +62,7 @@ public class LedgerReader implements ILedgerReader, Runnable {
                 subscribers.remove(subscriber);
                 if (subscribers.isEmpty()) {
                     this.server.unsubscribe(topic);
+                    this.topics.remove(topic);
                 }
             } 
         }
