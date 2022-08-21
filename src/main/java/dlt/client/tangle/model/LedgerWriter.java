@@ -39,6 +39,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   private final int depth;
   private final int minimumWeightMagnitude;
   private final int securityLevel;
+  private String url;
 
   public LedgerWriter(
     String protocol,
@@ -57,6 +58,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     this.depth = depth;
     this.minimumWeightMagnitude = mwm;
     this.securityLevel = securityLevel;
+    this.url = url;
 
     this.DLTOutboundBuffer = new ArrayBlockingQueue(bufferSize);
   }
@@ -170,5 +172,9 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
       System.out.println("Error in arguments!");
       e.printStackTrace();
     }
+  }
+
+  public String getUrl() {
+    return url;
   }
 }
