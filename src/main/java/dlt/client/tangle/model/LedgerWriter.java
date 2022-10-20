@@ -88,7 +88,18 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
         Transaction transaction = this.DLTOutboundBuffer.take();
         transaction.setPublishedAt(System.currentTimeMillis());
         String transactionJson = gson.toJson(transaction);
-        this.writeToTangle(transaction.getGroup(), transactionJson);
+
+        String tag;
+
+        if (transaction.getType().equals(TransactionType.LB_STATUS)) {
+          String[] temp = transaction.getSource().split("/");
+
+          tag = temp[2];
+        } else {
+          tag = transaction.getGroup();
+        }
+
+        this.writeToTangle(tag, transactionJson);
       } catch (InterruptedException ex) {
         this.DLTOutboundMonitor.interrupt();
       }
