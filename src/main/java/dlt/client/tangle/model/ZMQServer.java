@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,6 +20,7 @@ public class ZMQServer implements Runnable {
   private ZMQ.Socket serverListener;
   private String socketURL;
   private String address;
+  private Logger log;
 
   public ZMQServer(
     int bufferSize,
@@ -32,11 +34,12 @@ public class ZMQServer implements Runnable {
     this.socketURL =
       String.format("%s://%s:%s", socketProtocol, socketURL, socketPort);
     this.address = address;
+    this.log = Logger.getLogger(ZMQServer.class.getName());
   }
 
   public void start() {
     if (this.serverThread == null) {
-      System.out.println("Socket URL: " + this.socketURL);
+      this.log.info("Socket URL: " + this.socketURL);
 
       this.serverListener.connect(this.socketURL);
       this.serverThread = new Thread(this);
@@ -51,7 +54,7 @@ public class ZMQServer implements Runnable {
   }
 
   public void subscribe(String topic) {
-    System.out.println("Subscribe: " + topic);
+    this.log.info("Subscribe: " + topic);
     this.serverListener.subscribe(topic);
   }
 
@@ -65,7 +68,7 @@ public class ZMQServer implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("Address: " + address);
+    this.log.info("Address: " + address);
     while (!this.serverThread.isInterrupted()) {
       byte[] reply = serverListener.recv(0);
       String[] data = (new String(reply).split(" "));

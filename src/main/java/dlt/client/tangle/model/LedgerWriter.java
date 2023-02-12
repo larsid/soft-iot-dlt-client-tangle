@@ -23,6 +23,7 @@ import org.iota.jota.error.ArgumentException;
 import org.iota.jota.model.Transfer;
 import org.iota.jota.utils.SeedRandomGenerator;
 import org.iota.jota.utils.TrytesConverter;
+import java.util.logging.Logger;
 
 /**
  *
@@ -40,6 +41,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   private final int minimumWeightMagnitude;
   private final int securityLevel;
   private String url;
+  private Logger log;
 
   public LedgerWriter(
     String protocol,
@@ -59,6 +61,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     this.minimumWeightMagnitude = mwm;
     this.securityLevel = securityLevel;
     this.url = url;
+    this.log = Logger.getLogger(LedgerWriter.class.getName());
 
     this.DLTOutboundBuffer = new ArrayBlockingQueue(bufferSize);
   }
@@ -122,8 +125,8 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   }
 
   private Transaction getTypeTransaction(String transactionJSON) {
-    System.out.println("JSON Message");
-    System.out.println(transactionJSON);
+    this.log.info("JSON Message");
+    this.log.info(transactionJSON);
 
     JsonParser jsonparser = new JsonParser();
     JsonReader reader = new JsonReader(new StringReader(transactionJSON));
@@ -180,7 +183,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
         null
       );
     } catch (ArgumentException e) {
-      System.out.println("Error in arguments!");
+      this.log.info("Error in arguments!");
       e.printStackTrace();
     }
   }
