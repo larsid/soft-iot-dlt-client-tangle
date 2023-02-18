@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import dlt.client.tangle.enums.TransactionType;
+import dlt.client.tangle.model.transactions.LBDevice;
 import dlt.client.tangle.model.transactions.LBReply;
 import dlt.client.tangle.model.transactions.Reply;
 import dlt.client.tangle.model.transactions.Request;
@@ -151,9 +152,10 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
       return gson.fromJson(reader, Request.class);
     } else if (type.equals(TransactionType.LB_STATUS.name())) {
       return gson.fromJson(reader, Status.class);
+    } else {
+      return gson.fromJson(reader, LBDevice.class);
     }
 
-    return null;
   }
 
   private void writeToTangle(String tagGroup, String message) {
