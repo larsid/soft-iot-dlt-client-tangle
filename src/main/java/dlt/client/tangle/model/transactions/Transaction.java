@@ -45,4 +45,15 @@ public  class Transaction {
     public final long getPublishedAt() {
         return this.publishedAt;
     }
+
+    @Override
+    public String toString() {
+      return new StringBuilder("Transaction: ")
+        .append(this.source)
+        .append(this.group)
+        .append(this.type)
+        .append(this.createdAt)
+        .append(this.publishedAt)
+        .toString();
+    }
 }
