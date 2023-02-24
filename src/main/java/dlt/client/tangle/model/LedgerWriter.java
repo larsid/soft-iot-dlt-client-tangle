@@ -42,7 +42,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   private final int minimumWeightMagnitude;
   private final int securityLevel;
   private String url;
-  private Logger log;
+  private static final Logger logger = Logger.getLogger(LedgerWriter.class.getName());
 
   public LedgerWriter(
     String protocol,
@@ -62,7 +62,6 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
     this.minimumWeightMagnitude = mwm;
     this.securityLevel = securityLevel;
     this.url = url;
-    this.log = Logger.getLogger(LedgerWriter.class.getName());
 
     this.DLTOutboundBuffer = new ArrayBlockingQueue(bufferSize);
   }
@@ -115,8 +114,8 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   }
 
   private Transaction getTypeTransaction(String transactionJSON) {
-    this.log.info("JSON Message");
-    this.log.info(transactionJSON);
+    logger.info("JSON Message");
+    logger.info(transactionJSON);
 
     JsonParser jsonparser = new JsonParser();
     JsonReader reader = new JsonReader(new StringReader(transactionJSON));
@@ -174,7 +173,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
         null
       );
     } catch (ArgumentException e) {
-      this.log.info("Error in arguments!");
+      logger.info("Error in arguments!");
       e.printStackTrace();
     }
   }
