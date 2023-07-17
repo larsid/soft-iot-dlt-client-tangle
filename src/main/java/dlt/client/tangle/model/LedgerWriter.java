@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import dlt.client.tangle.enums.TransactionType;
+import dlt.client.tangle.model.transactions.LBDevice;
 import dlt.client.tangle.model.transactions.LBReply;
 import dlt.client.tangle.model.transactions.Reply;
 import dlt.client.tangle.model.transactions.Request;
@@ -23,6 +24,7 @@ import org.iota.jota.error.ArgumentException;
 import org.iota.jota.model.Transfer;
 import org.iota.jota.utils.SeedRandomGenerator;
 import org.iota.jota.utils.TrytesConverter;
+import java.util.logging.Logger;
 
 /**
  *
@@ -40,6 +42,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   private final int minimumWeightMagnitude;
   private final int securityLevel;
   private String url;
+  private static final Logger logger = Logger.getLogger(LedgerWriter.class.getName());
 
   public LedgerWriter(
     String protocol,
@@ -111,8 +114,8 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
   }
 
   private Transaction getTypeTransaction(String transactionJSON) {
-    System.out.println("JSON Message");
-    System.out.println(transactionJSON);
+    logger.info("JSON Message");
+    logger.info(transactionJSON);
 
     JsonParser jsonparser = new JsonParser();
     JsonReader reader = new JsonReader(new StringReader(transactionJSON));
@@ -137,9 +140,10 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
       return gson.fromJson(reader, Request.class);
     } else if (type.equals(TransactionType.LB_STATUS.name())) {
       return gson.fromJson(reader, Status.class);
+    } else {
+      return gson.fromJson(reader, LBDevice.class);
     }
 
-    return null;
   }
 
   private void writeToTangle(String tagGroup, String message) {
@@ -169,7 +173,7 @@ public class LedgerWriter implements ILedgerWriter, Runnable {
         null
       );
     } catch (ArgumentException e) {
-      System.out.println("Error in arguments!");
+      logger.info("Error in arguments!");
       e.printStackTrace();
     }
   }

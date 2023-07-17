@@ -92,7 +92,6 @@ public class LedgerReader implements ILedgerReader, Runnable {
         if (topic != null && !topic.isEmpty()) {
             Set<ILedgerSubscriber> subscribers = this.topics.get(topic);
             if (subscribers != null && !subscribers.isEmpty()) {
-
                 subscribers.forEach(sub -> sub.update(object));
             }
         }

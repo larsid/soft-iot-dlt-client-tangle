@@ -19,6 +19,7 @@ public class ZMQServer implements Runnable {
   private ZMQ.Socket serverListener;
   private String socketURL;
   private String address;
+  private static final Logger logger = Logger.getLogger(ZMQServer.class.getName());
 
   public ZMQServer(
     int bufferSize,
@@ -36,7 +37,7 @@ public class ZMQServer implements Runnable {
 
   public void start() {
     if (this.serverThread == null) {
-      System.out.println("Socket URL: " + this.socketURL);
+      logger.info("Socket URL: " + this.socketURL);
 
       this.serverListener.connect(this.socketURL);
       this.serverThread = new Thread(this);
@@ -51,7 +52,7 @@ public class ZMQServer implements Runnable {
   }
 
   public void subscribe(String topic) {
-    System.out.println("Subscribe: " + topic);
+    logger.info("Subscribe: " + topic);
     this.serverListener.subscribe(topic);
   }
 
@@ -65,7 +66,8 @@ public class ZMQServer implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("Address: " + address);
+    logger.info("Address: " + address);
+    
     while (!this.serverThread.isInterrupted()) {
       byte[] reply = serverListener.recv(0);
       String[] data = (new String(reply).split(" "));
@@ -82,7 +84,7 @@ public class ZMQServer implements Runnable {
     try {
       this.DLTInboundBuffer.put(receivedMessage);
     } catch (InterruptedException ex) {
-      Logger.getLogger(ZMQServer.class.getName()).log(Level.SEVERE, null, ex);
+      logger.log(Level.SEVERE, null, ex);
     }
   }
 }

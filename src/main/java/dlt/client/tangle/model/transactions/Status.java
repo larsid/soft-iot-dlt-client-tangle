@@ -27,7 +27,7 @@ public class Status extends Transaction {
         return lastLoad;
     }
     
-    public boolean getAvaible() {
+    public boolean getAvailable() {
     	return available;
     }
     
