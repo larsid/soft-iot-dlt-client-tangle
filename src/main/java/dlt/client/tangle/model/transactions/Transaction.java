@@ -12,7 +12,7 @@ public  class Transaction {
     private final String group;
     private final TransactionType type;
 
-    private long createdAt;
+    private final long createdAt;
     private long publishedAt;
 
     public Transaction(String source, String group, TransactionType type) {
@@ -44,6 +44,14 @@ public  class Transaction {
 
     public final long getPublishedAt() {
         return this.publishedAt;
+    }
+    
+    public final boolean isLoopback(String source){
+        return this.source.equals(source);
+    }
+    
+    public final boolean is(TransactionType transactionType){
+        return this.type.equals(transactionType);
     }
 
     @Override
